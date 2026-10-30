@@ -13,7 +13,7 @@
 
 body {
     margin: 0;
-    padding: 20px;
+    padding: 16px;
     font-family: "Noto Sans TC", sans-serif;
     background: #f3f5f1;
     color: #333;
@@ -21,7 +21,7 @@ body {
 
 .container {
     max-width: 520px;
-    margin: 30px auto;
+    margin: 25px auto;
     background: white;
     border-radius: 18px;
     overflow: hidden;
@@ -32,18 +32,18 @@ body {
     background: #315b45;
     color: white;
     text-align: center;
-    padding: 35px 20px;
+    padding: 38px 20px;
 }
 
 .header h1 {
     margin: 0;
-    font-size: 30px;
-    letter-spacing: 4px;
+    font-size: 32px;
+    letter-spacing: 5px;
 }
 
 .header p {
-    margin-bottom: 0;
-    font-size: 14px;
+    margin: 12px 0 0;
+    font-size: 15px;
 }
 
 .form-area {
@@ -52,22 +52,30 @@ body {
 
 h2 {
     color: #315b45;
-    font-size: 21px;
+    font-size: 22px;
+    margin-top: 0;
 }
 
 label {
     display: block;
-    margin: 18px 0 8px;
+    margin: 20px 0 8px;
     font-weight: bold;
+    font-size: 15px;
 }
 
 input, textarea, select {
     width: 100%;
-    padding: 13px;
+    padding: 14px;
     border: 1px solid #ddd;
     border-radius: 9px;
     font-size: 16px;
     background: white;
+    outline: none;
+    font-family: inherit;
+}
+
+input:focus, textarea:focus, select:focus {
+    border-color: #315b45;
 }
 
 textarea {
@@ -83,21 +91,31 @@ textarea {
 
 .time-row select {
     flex: 1;
+    min-width: 0;
+}
+
+.time-separator {
+    color: #315b45;
+    font-weight: bold;
 }
 
 .notice {
     margin-top: 25px;
-    padding: 16px;
+    padding: 18px;
     background: #edf3ed;
     border-radius: 10px;
     color: #315b45;
-    line-height: 1.8;
+    line-height: 1.9;
     font-size: 14px;
+}
+
+.notice strong {
+    font-size: 16px;
 }
 
 button {
     width: 100%;
-    margin-top: 22px;
+    margin-top: 24px;
     padding: 16px;
     background: #315b45;
     color: white;
@@ -112,11 +130,38 @@ button:hover {
     background: #254735;
 }
 
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+#status {
+    margin-top: 15px;
+    text-align: center;
+    line-height: 1.8;
+    color: #315b45;
+    font-size: 14px;
+}
+
 .footer {
     text-align: center;
-    padding: 15px;
+    padding: 18px;
     color: #999;
     font-size: 12px;
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 10px;
+    }
+
+    .container {
+        margin: 10px auto;
+    }
+
+    .form-area {
+        padding: 20px;
+    }
 }
 </style>
 </head>
@@ -125,89 +170,108 @@ button:hover {
 
 <div class="container">
 
+    <!-- 網站標題 -->
     <div class="header">
         <h1>明陽來村</h1>
         <p>宅配申請表單</p>
-        <p>歡迎填寫宅配資料</p>
+        <p>歡迎填寫以下宅配資料</p>
     </div>
 
     <div class="form-area">
 
         <h2>宅配資料填寫</h2>
 
+        <!-- Google 試算表連接 -->
         <form
-          action="https://formsubmit.co/YOUR_EMAIL"
-          method="POST"
-          id="deliveryForm">
+            id="deliveryForm"
+            action="https://script.google.com/macros/s/AKfycbxcrl6VPLxZcxSexXdw7yVBZ-pW_mo52_d6kCbEec-LRkMsTjcZwu2uGbWrZFTgcdb8BQ/exec"
+            method="POST"
+            target="submitFrame">
 
-            <input type="hidden" name="_subject"
-            value="明陽來村｜新宅配申請">
-
-            <input type="hidden" name="_captcha"
-            value="true">
-
-            <label>姓名 *</label>
+            <!-- 姓名 -->
+            <label for="name">姓名 *</label>
             <input
-              type="text"
-              name="姓名"
-              placeholder="請輸入您的姓名"
-              required>
+                type="text"
+                id="name"
+                name="name"
+                placeholder="請輸入您的姓名"
+                maxlength="50"
+                required>
 
-            <label>聯絡電話 *</label>
+            <!-- 聯絡電話 -->
+            <label for="phone">聯絡電話 *</label>
             <input
-              type="tel"
-              name="聯絡電話"
-              placeholder="請輸入聯絡電話"
-              pattern="[0-9+\-\s()]{8,20}"
-              required>
+                type="tel"
+                id="phone"
+                name="phone"
+                placeholder="請輸入聯絡電話"
+                pattern="[0-9+\-\s()]{8,20}"
+                required>
 
-            <label>宅配地址 *</label>
+            <!-- 宅配地址 -->
+            <label for="address">宅配地址 *</label>
             <textarea
-              name="宅配地址"
-              placeholder="請輸入完整宅配地址"
-              required></textarea>
+                id="address"
+                name="address"
+                placeholder="請輸入完整宅配地址"
+                maxlength="300"
+                required></textarea>
 
-            <label>購買物品 *</label>
+            <!-- 購買物品 -->
+            <label for="products">購買物品 *</label>
             <textarea
-              name="購買物品"
-              placeholder="請填寫購買物品及數量"
-              required></textarea>
+                id="products"
+                name="products"
+                placeholder="請填寫購買物品及數量"
+                maxlength="1000"
+                required></textarea>
 
-            <label>希望送貨日期 *</label>
-            <input
-              type="date"
-              name="希望送貨日期"
-              id="deliveryDate"
-              required>
-
+            <!-- 方便收貨時間 -->
             <label>方便收貨時間 *</label>
 
             <div class="time-row">
 
-                <select name="開始時間"
-                id="startTime" required>
+                <select
+                    name="startTime"
+                    id="startTime"
+                    required>
                 </select>
 
-                <span>～</span>
+                <span class="time-separator">～</span>
 
-                <select name="結束時間"
-                id="endTime" required>
+                <select
+                    name="endTime"
+                    id="endTime"
+                    required>
                 </select>
 
             </div>
 
+            <!-- 溫馨提醒 -->
             <div class="notice">
                 <strong>溫馨提醒</strong><br>
                 1. 送貨時間皆為下午時段。<br>
                 2. 請確認填寫的聯絡電話及宅配地址。<br>
-                3. 確定好送貨日期後會電話聯絡！
+                3. 確定好送貨日期後會電話聯絡！<br>
+                4. 請選擇方便收貨的時間。
             </div>
 
-            <button type="submit">
+            <!-- 提交按鈕 -->
+            <button type="submit" id="submitBtn">
                 提交宅配申請
             </button>
 
+            <div id="status" aria-live="polite"></div>
+
         </form>
+
+        <!-- 隱藏接收視窗 -->
+        <iframe
+            name="submitFrame"
+            id="submitFrame"
+            style="display:none">
+        </iframe>
+
     </div>
 
     <div class="footer">
@@ -218,21 +282,27 @@ button:hover {
 
 <script>
 
-// 設定可選擇時間：12:00～17:00
+// 建立下午12:00～17:00時間選項
 const start = document.getElementById("startTime");
 const end = document.getElementById("endTime");
 
 function addTimes(select) {
+
     for (let hour = 12; hour <= 17; hour++) {
+
         for (let minute = 0; minute < 60; minute += 30) {
 
-            if (hour === 17 && minute > 0) continue;
+            if (hour === 17 && minute > 0) {
+                continue;
+            }
 
-            let time =
-                String(hour).padStart(2, "0") + ":" +
+            const time =
+                String(hour).padStart(2, "0") +
+                ":" +
                 String(minute).padStart(2, "0");
 
-            let option = document.createElement("option");
+            const option = document.createElement("option");
+
             option.value = time;
             option.textContent = time;
 
@@ -244,8 +314,13 @@ function addTimes(select) {
 addTimes(start);
 addTimes(end);
 
+// 預設收貨時間
+start.value = "12:00";
+end.value = "13:00";
+
 // 結束時間必須晚於開始時間
 function updateEndTimes() {
+
     const selectedStart = start.value;
 
     Array.from(end.options).forEach(option => {
@@ -253,24 +328,64 @@ function updateEndTimes() {
     });
 
     if (end.value <= selectedStart) {
+
         const next = Array.from(end.options).find(
             option => option.value > selectedStart
         );
 
-        if (next) end.value = next.value;
+        if (next) {
+            end.value = next.value;
+        }
     }
 }
 
 start.addEventListener("change", updateEndTimes);
 updateEndTimes();
 
-// 不允許選擇過去日期
-const today = new Date();
-const localToday = new Date(
-    today.getTime() - today.getTimezoneOffset() * 60000
-).toISOString().split("T")[0];
+// 提交表單
+let submitted = false;
 
-document.getElementById("deliveryDate").min = localToday;
+const form = document.getElementById("deliveryForm");
+const button = document.getElementById("submitBtn");
+const status = document.getElementById("status");
+const frame = document.getElementById("submitFrame");
+
+form.addEventListener("submit", function(event) {
+
+    if (!form.reportValidity()) {
+        event.preventDefault();
+        return;
+    }
+
+    submitted = true;
+
+    button.disabled = true;
+    button.textContent = "資料傳送中...";
+
+    status.textContent =
+        "正在傳送資料，請稍候，請勿關閉頁面。";
+});
+
+// 接收 Google Apps Script 回應
+frame.addEventListener("load", function() {
+
+    if (!submitted) return;
+
+    submitted = false;
+
+    status.textContent =
+        "已收到伺服器回應，請確認申請資料是否成功寫入試算表。";
+
+    button.disabled = false;
+    button.textContent = "提交宅配申請";
+
+    form.reset();
+
+    start.value = "12:00";
+    updateEndTimes();
+    end.value = "13:00";
+
+});
 
 </script>
 
