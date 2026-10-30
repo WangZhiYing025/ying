@@ -4,123 +4,119 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>明陽來村｜宅配申請表</title>
+<title>明陽來村｜宅配申請</title>
 
 <style>
-* { box-sizing: border-box; }
+* {
+    box-sizing: border-box;
+}
 
 body {
-  margin: 0;
-  padding: 25px 15px;
-  background: #f3f6ef;
-  color: #344638;
-  font-family: "Microsoft JhengHei", sans-serif;
+    margin: 0;
+    padding: 20px;
+    font-family: "Noto Sans TC", sans-serif;
+    background: #f3f5f1;
+    color: #333;
 }
 
 .container {
-  max-width: 650px;
-  margin: auto;
-  background: white;
-  border-radius: 20px;
-  overflow: hidden;
-  box-shadow: 0 5px 20px #00000012;
+    max-width: 520px;
+    margin: 30px auto;
+    background: white;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px #00000012;
 }
 
 .header {
-  background: #41664c;
-  color: white;
-  text-align: center;
-  padding: 35px 15px;
+    background: #315b45;
+    color: white;
+    text-align: center;
+    padding: 35px 20px;
 }
 
 .header h1 {
-  margin: 0;
-  font-size: 32px;
+    margin: 0;
+    font-size: 30px;
+    letter-spacing: 4px;
 }
 
-.form {
-  padding: 30px;
+.header p {
+    margin-bottom: 0;
+    font-size: 14px;
+}
+
+.form-area {
+    padding: 25px;
 }
 
 h2 {
-  color: #41664c;
-  font-size: 21px;
-  border-left: 5px solid #9ab69b;
-  padding-left: 12px;
-  margin: 25px 0 20px;
+    color: #315b45;
+    font-size: 21px;
 }
 
 label {
-  display: block;
-  font-weight: bold;
-  margin-bottom: 8px;
+    display: block;
+    margin: 18px 0 8px;
+    font-weight: bold;
 }
 
-input, textarea {
-  width: 100%;
-  padding: 13px;
-  border: 1px solid #d5dfd5;
-  border-radius: 9px;
-  font-size: 16px;
-  margin-bottom: 18px;
-  font-family: inherit;
+input, textarea, select {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #ddd;
+    border-radius: 9px;
+    font-size: 16px;
+    background: white;
 }
 
 textarea {
-  min-height: 90px;
-  resize: vertical;
+    resize: vertical;
+    min-height: 85px;
 }
 
-input:focus, textarea:focus {
-  outline: 2px solid #9ab69b;
+.time-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
-.time {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  gap: 10px;
-  align-items: center;
+.time-row select {
+    flex: 1;
 }
 
 .notice {
-  background: #fff4df;
-  color: #805b28;
-  padding: 17px;
-  border-radius: 10px;
-  line-height: 1.8;
-  margin: 15px 0 25px;
+    margin-top: 25px;
+    padding: 16px;
+    background: #edf3ed;
+    border-radius: 10px;
+    color: #315b45;
+    line-height: 1.8;
+    font-size: 14px;
 }
 
 button {
-  width: 100%;
-  padding: 16px;
-  border: none;
-  border-radius: 10px;
-  background: #41664c;
-  color: white;
-  font-size: 19px;
-  font-weight: bold;
-  cursor: pointer;
+    width: 100%;
+    margin-top: 22px;
+    padding: 16px;
+    background: #315b45;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
 }
 
 button:hover {
-  background: #304e38;
+    background: #254735;
 }
 
-button:disabled {
-  opacity: .6;
-  cursor: not-allowed;
-}
-
-#message {
-  text-align: center;
-  margin-top: 18px;
-  font-weight: bold;
-  line-height: 1.7;
-}
-
-@media(max-width:480px) {
-  .form { padding: 22px 18px; }
+.footer {
+    text-align: center;
+    padding: 15px;
+    color: #999;
+    font-size: 12px;
 }
 </style>
 </head>
@@ -129,205 +125,152 @@ button:disabled {
 
 <div class="container">
 
-  <header class="header">
-    <h1>🌿 明陽來村</h1>
-    <p>宅配申請表</p>
-    <p>歡迎填寫宅配資料</p>
-  </header>
+    <div class="header">
+        <h1>明陽來村</h1>
+        <p>宅配申請表單</p>
+        <p>歡迎填寫宅配資料</p>
+    </div>
 
-  <main class="form">
+    <div class="form-area">
 
-    <form id="deliveryForm">
+        <h2>宅配資料填寫</h2>
 
-      <h2>申請人資料</h2>
+        <form
+          action="https://formsubmit.co/YOUR_EMAIL"
+          method="POST"
+          id="deliveryForm">
 
-      <label>姓名 *</label>
-      <input name="name" type="text"
-             placeholder="請輸入姓名" required
-             maxlength="50">
+            <input type="hidden" name="_subject"
+            value="明陽來村｜新宅配申請">
 
-      <label>聯絡電話 *</label>
-      <input name="phone" type="tel"
-             placeholder="請輸入聯絡電話"
-             inputmode="tel" required
-             maxlength="20">
+            <input type="hidden" name="_captcha"
+            value="true">
 
-      <label>宅配地址 *</label>
-      <textarea name="address"
-                placeholder="請填寫完整宅配地址"
-                required maxlength="300"></textarea>
+            <label>姓名 *</label>
+            <input
+              type="text"
+              name="姓名"
+              placeholder="請輸入您的姓名"
+              required>
 
-      <h2>購買資訊</h2>
+            <label>聯絡電話 *</label>
+            <input
+              type="tel"
+              name="聯絡電話"
+              placeholder="請輸入聯絡電話"
+              pattern="[0-9+\-\s()]{8,20}"
+              required>
 
-      <label>購買物品 *</label>
-      <textarea name="items"
-                placeholder="請填寫購買物品及數量"
-                required maxlength="1000"></textarea>
+            <label>宅配地址 *</label>
+            <textarea
+              name="宅配地址"
+              placeholder="請輸入完整宅配地址"
+              required></textarea>
 
-      <h2>方便收貨時間</h2>
+            <label>購買物品 *</label>
+            <textarea
+              name="購買物品"
+              placeholder="請填寫購買物品及數量"
+              required></textarea>
 
-      <label>方便時間段 *</label>
+            <label>希望送貨日期 *</label>
+            <input
+              type="date"
+              name="希望送貨日期"
+              id="deliveryDate"
+              required>
 
-      <div class="time">
-        <input type="time" name="timeStart"
-               min="12:00" required>
-        <span>～</span>
-        <input type="time" name="timeEnd"
-               min="12:00" required>
-      </div>
+            <label>方便收貨時間 *</label>
 
-      <div class="notice">
-        <strong>📢 宅配注意事項</strong><br>
-        1. 送貨時間皆安排於下午時段。<br>
-        2. 確定好送貨日期後，將會以電話聯絡您。<br>
-        3. 請確認聯絡電話及宅配地址正確。<br>
-        感謝您的配合！
-      </div>
+            <div class="time-row">
 
-      <button type="submit" id="submitBtn">
-        送出宅配申請
-      </button>
+                <select name="開始時間"
+                id="startTime" required>
+                </select>
 
-      <div id="message" role="status" aria-live="polite"></div>
+                <span>～</span>
 
-    </form>
+                <select name="結束時間"
+                id="endTime" required>
+                </select>
 
-    <!-- 隱藏的接收畫面，不會出現在網站 -->
-    <iframe name="submitFrame"
-            id="submitFrame"
-            title="申請資料傳送"
-            style="display:none"></iframe>
+            </div>
 
-  </main>
+            <div class="notice">
+                <strong>溫馨提醒</strong><br>
+                1. 送貨時間皆為下午時段。<br>
+                2. 請確認填寫的聯絡電話及宅配地址。<br>
+                3. 確定好送貨日期後會電話聯絡！
+            </div>
+
+            <button type="submit">
+                提交宅配申請
+            </button>
+
+        </form>
+    </div>
+
+    <div class="footer">
+        © 明陽來村｜宅配服務
+    </div>
+
 </div>
 
 <script>
 
-// 你的 Google Apps Script 原本網址
-const SCRIPT_URL =
-"https://script.google.com/macros/s/AKfycbz_cYVOzqymYK39GTLGcQ1oOs-6em4lgMOTYtAT0fq-kQDfC2xLv5msT5MzKiZ0Kklb/exec";
+// 設定可選擇時間：12:00～17:00
+const start = document.getElementById("startTime");
+const end = document.getElementById("endTime");
 
-const form = document.getElementById("deliveryForm");
-const button = document.getElementById("submitBtn");
-const message = document.getElementById("message");
-const frame = document.getElementById("submitFrame");
+function addTimes(select) {
+    for (let hour = 12; hour <= 17; hour++) {
+        for (let minute = 0; minute < 60; minute += 30) {
 
-let submitting = false;
-let currentRequestId = "";
+            if (hour === 17 && minute > 0) continue;
 
-window.addEventListener("message", function(event) {
+            let time =
+                String(hour).padStart(2, "0") + ":" +
+                String(minute).padStart(2, "0");
 
-  const result = event.data;
+            let option = document.createElement("option");
+            option.value = time;
+            option.textContent = time;
 
-  if (!result || result.source !== "mingyang-delivery") {
-    return;
-  }
-
-  if (result.requestId !== currentRequestId) {
-    return;
-  }
-
-  submitting = false;
-  button.disabled = false;
-  button.textContent = "送出宅配申請";
-
-  if (result.status === "success") {
-
-    message.style.color = "#41664c";
-    message.textContent =
-      "✓ 申請成功！資料已存入系統，確認送貨日期後將以電話聯絡您。";
-
-    form.reset();
-
-  } else {
-
-    message.style.color = "#c0392b";
-    message.textContent =
-      "送出失敗：" + (result.message || "請稍後再試。");
-
-  }
-
-});
-
-form.addEventListener("submit", function(e) {
-
-  e.preventDefault();
-
-  if (submitting) return;
-
-  const data = Object.fromEntries(new FormData(form));
-
-  if (data.timeStart < "12:00" ||
-      data.timeEnd < "12:00") {
-
-    alert("宅配時間皆安排於下午時段！");
-    return;
-  }
-
-  if (data.timeEnd <= data.timeStart) {
-
-    alert("結束時間必須晚於開始時間！");
-    return;
-  }
-
-  submitting = true;
-
-  currentRequestId =
-    Date.now().toString() + Math.random().toString(36).slice(2);
-
-  button.disabled = true;
-  button.textContent = "資料傳送中...";
-
-  message.style.color = "#805b28";
-  message.textContent = "正在傳送申請資料，請稍候...";
-
-  // 建立真正的表單 POST 請求
-  const sendForm = document.createElement("form");
-
-  sendForm.method = "POST";
-  sendForm.action = SCRIPT_URL;
-  sendForm.target = "submitFrame";
-  sendForm.style.display = "none";
-
-  const payload = {
-    ...data,
-    requestId: currentRequestId
-  };
-
-  Object.entries(payload).forEach(([key, value]) => {
-
-    const input = document.createElement("input");
-
-    input.type = "hidden";
-    input.name = key;
-    input.value = value;
-
-    sendForm.appendChild(input);
-
-  });
-
-  document.body.appendChild(sendForm);
-  sendForm.submit();
-  sendForm.remove();
-
-  // 等待後端回覆，避免一直停留在傳送中
-  window.setTimeout(function() {
-
-    if (submitting) {
-
-      submitting = false;
-      button.disabled = false;
-      button.textContent = "重新送出宅配申請";
-
-      message.style.color = "#c0392b";
-      message.textContent =
-        "目前尚未收到系統確認，請先檢查試算表是否已有紀錄，避免重複申請。";
-
+            select.appendChild(option);
+        }
     }
+}
 
-  }, 20000);
+addTimes(start);
+addTimes(end);
 
-});
+// 結束時間必須晚於開始時間
+function updateEndTimes() {
+    const selectedStart = start.value;
+
+    Array.from(end.options).forEach(option => {
+        option.disabled = option.value <= selectedStart;
+    });
+
+    if (end.value <= selectedStart) {
+        const next = Array.from(end.options).find(
+            option => option.value > selectedStart
+        );
+
+        if (next) end.value = next.value;
+    }
+}
+
+start.addEventListener("change", updateEndTimes);
+updateEndTimes();
+
+// 不允許選擇過去日期
+const today = new Date();
+const localToday = new Date(
+    today.getTime() - today.getTimezoneOffset() * 60000
+).toISOString().split("T")[0];
+
+document.getElementById("deliveryDate").min = localToday;
 
 </script>
 
