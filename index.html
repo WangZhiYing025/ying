@@ -66,7 +66,14 @@ input, textarea {
   font-family: inherit;
 }
 
-textarea { min-height: 90px; }
+textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+input:focus, textarea:focus {
+  outline: 2px solid #9ab69b;
+}
 
 .time {
   display: grid;
@@ -96,14 +103,20 @@ button {
   cursor: pointer;
 }
 
+button:hover {
+  background: #304e38;
+}
+
 button:disabled {
   opacity: .6;
+  cursor: not-allowed;
 }
 
 #message {
   text-align: center;
   margin-top: 18px;
   font-weight: bold;
+  line-height: 1.7;
 }
 
 @media(max-width:480px) {
@@ -114,7 +127,6 @@ button:disabled {
 
 <body>
 
-<!-- 全網站只保留這一份申請表 -->
 <div class="container">
 
   <header class="header">
@@ -131,23 +143,26 @@ button:disabled {
 
       <label>姓名 *</label>
       <input name="name" type="text"
-             placeholder="請輸入姓名" required>
+             placeholder="請輸入姓名" required
+             maxlength="50">
 
       <label>聯絡電話 *</label>
       <input name="phone" type="tel"
-             placeholder="請輸入聯絡電話" required>
+             placeholder="請輸入聯絡電話"
+             inputmode="tel" required
+             maxlength="20">
 
       <label>宅配地址 *</label>
       <textarea name="address"
                 placeholder="請填寫完整宅配地址"
-                required></textarea>
+                required maxlength="300"></textarea>
 
       <h2>購買資訊</h2>
 
       <label>購買物品 *</label>
       <textarea name="items"
                 placeholder="請填寫購買物品及數量"
-                required></textarea>
+                required maxlength="1000"></textarea>
 
       <h2>方便收貨時間</h2>
 
@@ -173,68 +188,144 @@ button:disabled {
         送出宅配申請
       </button>
 
-      <div id="message"></div>
+      <div id="message" role="status" aria-live="polite"></div>
 
     </form>
+
+    <!-- 隱藏的接收畫面，不會出現在網站 -->
+    <iframe name="submitFrame"
+            id="submitFrame"
+            title="申請資料傳送"
+            style="display:none"></iframe>
 
   </main>
 </div>
 
 <script>
 
-// 請保留你原本部署好的 Google Apps Script 網址
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxgeWhH7TP3nb4sHtg1W4bMMm_tzH48j2mi29hDP0pVHOOiVQJQfHiLlhLtwePIvYZx/exec";
+// 你的 Google Apps Script 原本網址
+const SCRIPT_URL =
+"https://script.google.com/macros/s/AKfycbz_cYVOzqymYK39GTLGcQ1oOs-6em4lgMOTYtAT0fq-kQDfC2xLv5msT5MzKiZ0Kklb/exec";
 
 const form = document.getElementById("deliveryForm");
 const button = document.getElementById("submitBtn");
 const message = document.getElementById("message");
+const frame = document.getElementById("submitFrame");
 
-form.addEventListener("submit", async function(e) {
+let submitting = false;
+let currentRequestId = "";
+
+window.addEventListener("message", function(event) {
+
+  const result = event.data;
+
+  if (!result || result.source !== "mingyang-delivery") {
+    return;
+  }
+
+  if (result.requestId !== currentRequestId) {
+    return;
+  }
+
+  submitting = false;
+  button.disabled = false;
+  button.textContent = "送出宅配申請";
+
+  if (result.status === "success") {
+
+    message.style.color = "#41664c";
+    message.textContent =
+      "✓ 申請成功！資料已存入系統，確認送貨日期後將以電話聯絡您。";
+
+    form.reset();
+
+  } else {
+
+    message.style.color = "#c0392b";
+    message.textContent =
+      "送出失敗：" + (result.message || "請稍後再試。");
+
+  }
+
+});
+
+form.addEventListener("submit", function(e) {
 
   e.preventDefault();
+
+  if (submitting) return;
 
   const data = Object.fromEntries(new FormData(form));
 
   if (data.timeStart < "12:00" ||
       data.timeEnd < "12:00") {
+
     alert("宅配時間皆安排於下午時段！");
     return;
   }
 
   if (data.timeEnd <= data.timeStart) {
+
     alert("結束時間必須晚於開始時間！");
     return;
   }
 
+  submitting = true;
+
+  currentRequestId =
+    Date.now().toString() + Math.random().toString(36).slice(2);
+
   button.disabled = true;
   button.textContent = "資料傳送中...";
 
-  try {
+  message.style.color = "#805b28";
+  message.textContent = "正在傳送申請資料，請稍候...";
 
-    await fetch(SCRIPT_URL, {
-      method: "POST",
-      mode: "no-cors",
-      body: new URLSearchParams(data)
-    });
+  // 建立真正的表單 POST 請求
+  const sendForm = document.createElement("form");
 
-    message.style.color = "#41664c";
-    message.textContent =
-      "感謝您！請留意後續電話聯絡。";
+  sendForm.method = "POST";
+  sendForm.action = SCRIPT_URL;
+  sendForm.target = "submitFrame";
+  sendForm.style.display = "none";
 
-    form.reset();
+  const payload = {
+    ...data,
+    requestId: currentRequestId
+  };
 
-  } catch (error) {
+  Object.entries(payload).forEach(([key, value]) => {
 
-    message.style.color = "red";
-    message.textContent =
-      "送出失敗，請稍後再試。";
+    const input = document.createElement("input");
 
-  } finally {
+    input.type = "hidden";
+    input.name = key;
+    input.value = value;
 
-    button.disabled = false;
-    button.textContent = "送出宅配申請";
+    sendForm.appendChild(input);
 
-  }
+  });
+
+  document.body.appendChild(sendForm);
+  sendForm.submit();
+  sendForm.remove();
+
+  // 等待後端回覆，避免一直停留在傳送中
+  window.setTimeout(function() {
+
+    if (submitting) {
+
+      submitting = false;
+      button.disabled = false;
+      button.textContent = "重新送出宅配申請";
+
+      message.style.color = "#c0392b";
+      message.textContent =
+        "目前尚未收到系統確認，請先檢查試算表是否已有紀錄，避免重複申請。";
+
+    }
+
+  }, 20000);
 
 });
 
