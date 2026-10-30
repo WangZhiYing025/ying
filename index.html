@@ -170,7 +170,7 @@ button:disabled {
 
 <div class="container">
 
-    <!-- 網站標題 -->
+    <!-- 明陽來村標題 -->
     <div class="header">
         <h1>明陽來村</h1>
         <p>宅配申請表單</p>
@@ -181,7 +181,6 @@ button:disabled {
 
         <h2>宅配資料填寫</h2>
 
-        <!-- Google 試算表連接 -->
         <form
             id="deliveryForm"
             action="https://script.google.com/macros/s/AKfycbxcrl6VPLxZcxSexXdw7yVBZ-pW_mo52_d6kCbEec-LRkMsTjcZwu2uGbWrZFTgcdb8BQ/exec"
@@ -256,7 +255,7 @@ button:disabled {
                 4. 請選擇方便收貨的時間。
             </div>
 
-            <!-- 提交按鈕 -->
+            <!-- 提交 -->
             <button type="submit" id="submitBtn">
                 提交宅配申請
             </button>
@@ -265,7 +264,6 @@ button:disabled {
 
         </form>
 
-        <!-- 隱藏接收視窗 -->
         <iframe
             name="submitFrame"
             id="submitFrame"
@@ -282,7 +280,7 @@ button:disabled {
 
 <script>
 
-// 建立下午12:00～17:00時間選項
+// 建立12:00～17:00時間選項
 const start = document.getElementById("startTime");
 const end = document.getElementById("endTime");
 
@@ -314,7 +312,7 @@ function addTimes(select) {
 addTimes(start);
 addTimes(end);
 
-// 預設收貨時間
+// 預設時間
 start.value = "12:00";
 end.value = "13:00";
 
@@ -342,7 +340,7 @@ function updateEndTimes() {
 start.addEventListener("change", updateEndTimes);
 updateEndTimes();
 
-// 提交表單
+// 表單提交
 let submitted = false;
 
 const form = document.getElementById("deliveryForm");
@@ -366,7 +364,7 @@ form.addEventListener("submit", function(event) {
         "正在傳送資料，請稍候，請勿關閉頁面。";
 });
 
-// 接收 Google Apps Script 回應
+// 接收伺服器回應
 frame.addEventListener("load", function() {
 
     if (!submitted) return;
@@ -374,7 +372,7 @@ frame.addEventListener("load", function() {
     submitted = false;
 
     status.textContent =
-        "已收到伺服器回應，請確認申請資料是否成功寫入試算表。";
+        "已收到伺服器回應，請確認 Google 試算表是否成功新增資料。";
 
     button.disabled = false;
     button.textContent = "提交宅配申請";
